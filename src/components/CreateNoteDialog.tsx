@@ -16,10 +16,16 @@ import { Button } from './ui/button'
 
 export default function CreateNoteDialog() {
   const [name, setName] = React.useState('')
+
+  const resetHandler = () => {
+    setName("")
+  }
   const handleSubmit = () => {
     e.preventDefault();
     console.log('제출했습니다.')
   }
+
+
 
   return (
     <Dialog>
@@ -45,7 +51,7 @@ export default function CreateNoteDialog() {
             />
             <div className='h-4'></div>
             <div className='flex items-center gap-2'>
-                <Button type="reset" variant={"secondary"}>Cancel</Button>
+                <Button type="reset" onClick={resetHandler} variant={"secondary"}>Cancel</Button>
                 <Button type="submit" className='bg-green-600'>Create</Button>
             </div>
         </form>
