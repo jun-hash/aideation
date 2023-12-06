@@ -8,21 +8,46 @@ import {
     DialogTitle,
     DialogTrigger,
   } from "@/components/ui/dialog"
-  
+import axios from 'axios'
 import { Loader2, Plus } from 'lucide-react'
 import { Input } from "@/components/ui/input"
 import { getSystemErrorName } from 'util'
 import { Button } from './ui/button'
+import { useMutation } from "@tanstack/react-query";
 
 export default function CreateNoteDialog() {
   const [name, setName] = React.useState('')
 
+  const createNotebook = useMutation({
+    mutationFn: async () => {
+        const response = await axios.post("/api/createNoteBook", {
+            name:name
+        })
+        return response.data;
+    },
+  }) 
+
   const resetHandler = () => {
     setName("")
   }
-  const handleSubmit = () => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('제출했습니다.')
+    //Validation
+    if (name === "") {
+        window.alert("Please enter a name for your notebook")
+        return;
+
+    }
+    //react-queruy mutation
+    createNotebook.mutate(undefined, {
+        onSuccess:() => {
+            console.log("created new note:")
+        },
+        onError: (error) => {
+            console.error(error)
+            window.alert("Failed to create new notebook")
+        }
+    })
   }
 
 

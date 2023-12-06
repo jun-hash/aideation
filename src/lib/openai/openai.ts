@@ -5,8 +5,6 @@ const config = new Configuration ( {
 })
 
 const openai = new OpenAIApi(config);
-openai.createImage
-
 
 export async function generateImagePrompt (name:string) {
     try {
@@ -27,6 +25,7 @@ export async function generateImagePrompt (name:string) {
             ]
         })
         const data = await response.json()
+        console.log('TESTSTETSETSE',data);
         const image_description = data.choices[0].message.content
         return image_description as string
         

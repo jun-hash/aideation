@@ -2,7 +2,7 @@
 
 import { db } from "@/lib/db";
 import { $notes } from "@/lib/db/schema";
-import { generateImage, generateImagePrompt } from "@/lib/openai";
+import { generateImage, generateImagePrompt } from "@/lib/openai/openai";
 import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 
