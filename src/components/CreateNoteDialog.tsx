@@ -13,11 +13,21 @@ import { Loader2, Plus } from 'lucide-react'
 import { Input } from "@/components/ui/input"
 import { getSystemErrorName } from 'util'
 import { Button } from './ui/button'
+import { useToast } from "@/components/ui/use-toast"
 import { useMutation } from "@tanstack/react-query";
+import { useRouter } from "next/navigation"
+
+type NameState = string
 
 export default function CreateNoteDialog() {
-  const [name, setName] = React.useState('')
+  //Set up
+  const router = useRouter()
+  const { toast } = useToast()
 
+  //Local state
+  const [name, setName] = React.useState<NameState>('')
+  
+  //Server State
   const createNotebook = useMutation({
     mutationFn: async () => {
         const response = await axios.post("/api/createNoteBook", {
@@ -27,6 +37,16 @@ export default function CreateNoteDialog() {
     },
   }) 
 
+  const uploadToFirebase = useMutation({
+    mutationFn: async (noteId: string) => {
+      const response = await axios.post("/api/uploadToFirebase", {
+        noteId,
+      });
+      return response.data;
+    },
+  });
+
+  //Event Handler
   const resetHandler = () => {
     setName("")
   }
@@ -34,23 +54,32 @@ export default function CreateNoteDialog() {
     e.preventDefault();
     //Validation
     if (name === "") {
-        window.alert("Please enter a name for your notebook")
-        return;
+        toast({
+            variant: "destructive",
+            title: "Please Enter a name",
+          })
 
     }
     //react-queruy mutation
     createNotebook.mutate(undefined, {
         onSuccess:({ note_id }) => {
-            console.log("created new note:", { note_id })
+            toast({
+                title: "Note Created",
+                description: `${note_id} created`,
+              })
+              // hit another endpoint to uplod the temp dalle url to permanent firebase url
+              uploadToFirebase.mutate(note_id);
+              router.push(`/notebook/${note_id}`);
         },
         onError: (error) => {
-            console.error(error)
-            window.alert("Failed to create new notebook")
+            toast({
+                variant: "destructive",
+                title: "Note Failed",
+                description: error.message
+              })
         }
     })
   }
-
-
 
   return (
     <Dialog>
