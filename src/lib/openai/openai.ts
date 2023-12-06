@@ -36,6 +36,18 @@ export async function generateImagePrompt (name:string) {
 }
 
 
-export async function generateImage() {
+export async function generateImage(image_description: string) {
+    try {
+        const response = await openai.createImage({
+            prompt: image_description,
+            n:1,
+            size: '256*256'
+        })
+        const data = await response.json()
+        const image_url = data.data[0].url;
+        return image_url as string;
+    } catch (error) {
+        console.error(error)
+    }
 
 }

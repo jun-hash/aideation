@@ -40,8 +40,8 @@ export default function CreateNoteDialog() {
     }
     //react-queruy mutation
     createNotebook.mutate(undefined, {
-        onSuccess:() => {
-            console.log("created new note:")
+        onSuccess:({ note_id }) => {
+            console.log("created new note:", { note_id })
         },
         onError: (error) => {
             console.error(error)
