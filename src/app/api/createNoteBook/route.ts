@@ -22,6 +22,7 @@ export async function POST(req: Request) {
   }
 
   const image_url = await generateImage(image_description);
+  console.log('imageURL', image_url)
   if(!image_url) {
     return new NextResponse('failed to generate image', {
         status: 500,
@@ -38,7 +39,7 @@ export async function POST(req: Request) {
     .returning({
         insertedId: $notes.id,
     })
-
+  console.log('noteIds',note_ids)
   return NextResponse.json({
     note_id: note_ids[0].insertedId
   })
