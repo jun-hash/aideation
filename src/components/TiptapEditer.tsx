@@ -22,27 +22,32 @@ const TiptapEditer = ({note} :Props) => {
   const { complete, completion } = useCompletion({
     api: "/api/completion"
   })
-  //Local State
-  const editor = useEditor({
-    autofocus: true,
-    extensions: [StarterKit],
-    content: editorState,
-    onUpdate: ({ editor }) => {
-      setEditorState(editor.getHTML());
-    },
-  });
 
+  //Local State
   const customText = Text.extend({
     addKeyboardShortcuts() {
       return {
         "Shift-a": ()=> {
+          console.log('누르셨습니다')
           const prompt = this.editor.getText().split("").slice(-30).join("")
+          console.log(prompt)
           complete(prompt)
           return true;
         }
       }
     }
   })
+
+  const editor = useEditor({
+    autofocus: true,
+    extensions: [StarterKit, customText],
+    content: editorState,
+    onUpdate: ({ editor }) => {
+      setEditorState(editor.getHTML());
+    },
+  });
+
+
 
   //Server State
   const saveNoteBook = useMutation({
@@ -70,12 +75,21 @@ const TiptapEditer = ({note} :Props) => {
     })
   }, [debouncedEditorState])
 
+  
+  const lastCompletion = React.useRef("");
+  React.useEffect(() => {
+    if (!completion || !editor) return;
+    const diff = completion.slice(lastCompletion.current.length);
+    lastCompletion.current = completion;
+    editor.commands.insertContent(diff);
+  }, [completion, editor]);
+
 
   return (
     <>
         <div className="flex justify-between">
             {editor && <TiptapMenuBar editor={editor} />}
-            <Button className="bg-green-600">
+            <Button disabled variant={"outline"}>
               {saveNoteBook.isLoading ? "Saving" : "Saved"}
               </Button>
         </div>
