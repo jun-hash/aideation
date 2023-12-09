@@ -26,6 +26,14 @@ export default function CreateNoteDialog() {
 
   //Local state
   const [name, setName] = React.useState<NameState>('')
+
+  // Blocking AI Modal
+  const [showToast, setShowToast] = React.useState(false)
+  if (showToast) {
+    toast({
+      title: "AI is Creating Note Image",
+    });
+  }
   
   //Server State
   const createNotebook = useMutation({
@@ -35,7 +43,8 @@ export default function CreateNoteDialog() {
         })
         return response.data;
     },
-  }) 
+  })
+  console.log(createNotebook) 
 
   const uploadToFirebase = useMutation({
     mutationFn: async (noteId: string) => {
@@ -63,6 +72,7 @@ export default function CreateNoteDialog() {
     //react-queruy mutation
     createNotebook.mutate(undefined, {
         onSuccess:({ note_id }) => {
+          console.log(createNotebook)
             toast({
                 title: "Note Created",
                 description: `${note_id} created`,
@@ -106,7 +116,14 @@ export default function CreateNoteDialog() {
             <div className='h-4'></div>
             <div className='flex items-center gap-2'>
                 <Button type="reset" onClick={resetHandler} variant={"secondary"}>Cancel</Button>
-                <Button type="submit" className='bg-green-600'>Create</Button>
+                {!createNotebook.isPending && (
+                  <Button type="submit" className='bg-green-600'>
+                    Create
+                  </Button>
+                )}
+                {createNotebook.isPending && (
+                <Loader2 className="w-6 h-6 mr-2 animate-spin" />
+                )}
             </div>
         </form>
     </DialogContent>
