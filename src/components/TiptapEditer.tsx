@@ -4,6 +4,7 @@ import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import TiptapMenuBar from "./TiptapMenuBar"
 import { Button } from "./ui/button"
+import { useDebounce } from "@/hooks/useDebounce"
 
 type Props = {
 
@@ -12,7 +13,6 @@ type Props = {
 
 
 const TiptapEditer = (props:Props) => {
-
   const [editorState, setEditorState] = React.useState("")
   
   const editor = useEditor({
@@ -23,6 +23,15 @@ const TiptapEditer = (props:Props) => {
       setEditorState(editor.getHTML());
     },
   });
+
+
+  //Event Handler 
+  const debouncedEditorState = useDebounce(editorState, 300)
+  React.useEffect(() => {
+    console.log(debouncedEditorState)
+    // setEditorState(debouncedEditorState)
+
+  }, [debouncedEditorState])
 
   return (
     <>
