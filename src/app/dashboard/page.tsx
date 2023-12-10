@@ -8,7 +8,6 @@ import CreateNoteDialog from '@/components/CreateNoteDialog'
 import { db } from "@/lib/db";
 import { $notes } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
-// import Image from 'next/image'
 // import Image from "next/image";
 
 type Props = {}
