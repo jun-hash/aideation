@@ -1,7 +1,7 @@
 import React from 'react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, CalendarCheck } from 'lucide-react'
 import { UserButton, auth  } from '@clerk/nextjs'
 import { Separator } from '@/components/ui/separator'
 import CreateNoteDialog from '@/components/CreateNoteDialog'
@@ -36,7 +36,13 @@ const DashboardPage = async (props: Props) => {
                     <div className="w-4"></div>
                     <h1 className='text-3xl font-bold text-gray-900'>My Notes</h1>
                     <div className="w-4"></div>
-                    <UserButton />
+                    <div className="flex items-center">
+                        <UserButton />
+                        <Link href="/tasks">
+                            <CalendarCheck className="ml-2 w-8 h-8 hover:scale-105"/>
+                        </Link>
+                    </div>
+
                 </div>
             </div>
 
