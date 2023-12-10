@@ -8,6 +8,7 @@ import { and, eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import TiptapEditer from '@/components/TiptapEditer';
+import DeleteButton from '@/components/DeleteButton'; 
 
 type Props = {
     params: {
@@ -54,7 +55,7 @@ const NotebookPage  = async ({params: {noteId}} : Props) => {
               {note.name}
             </span>
             <div className="ml-auto">
-              <Button variant="destructive" size="sm">Delete</Button>
+              <DeleteButton noteId={note.id} variant="destructive" size="sm"></DeleteButton>
             </div>
         </div>
 
