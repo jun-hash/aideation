@@ -1,4 +1,11 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+This is a gpt api + vercel ai + next note app like notion.
+
+I refer to the repository aidetion
+
+## Feature
+- generate ai image
+- auto completion
+- note, task CRUD
 
 ## Getting Started
 
